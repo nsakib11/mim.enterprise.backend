@@ -1,0 +1,20 @@
+	Bank
+	BankBranch
+
+	CostCenter
+	Customer
+
+	Employee
+	Inventory
+
+	Product
+
+	Purchase
+	PurchaseItem
+Sales
+SalesItem
+	Shop
+	Supplier
+
+
+	Unit
