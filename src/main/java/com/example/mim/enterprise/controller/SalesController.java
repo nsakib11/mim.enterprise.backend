@@ -1,6 +1,7 @@
 package com.example.mim.enterprise.controller;
 
 import com.example.mim.enterprise.dto.SalesDto;
+import com.example.mim.enterprise.dto.SalesUpdateDTO;
 import com.example.mim.enterprise.model.Sales;
 import com.example.mim.enterprise.service.SalesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,9 @@ public class SalesController {
 
     // UPDATE
     @PutMapping("/{id}")
-    public ResponseEntity<SalesDto> update(@PathVariable Long id, @RequestBody Sales sales) {
-        return ResponseEntity.ok(salesService.update(id, sales));
+    public ResponseEntity<Sales> update(@PathVariable Long id, @RequestBody SalesUpdateDTO salesDTO) {
+        Sales updatedSale = salesService.update(id, salesDTO);
+        return ResponseEntity.ok(updatedSale);
     }
 
     // GET BY ID

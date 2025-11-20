@@ -2,8 +2,10 @@ package com.example.mim.enterprise.service;
 
 import com.example.mim.enterprise.dto.SalesDto;
 import com.example.mim.enterprise.dto.SalesItemDto;
+import com.example.mim.enterprise.dto.SalesUpdateDTO;
 import com.example.mim.enterprise.model.*;
 import com.example.mim.enterprise.repository.SalesRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class SalesService {
 
     @Autowired
     private SalesRepository salesRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     public String generateInvoiceNo() {
         String lastInvoice = salesRepository.findLastInvoiceNo(); // e.g. "INV0005"
@@ -54,42 +59,62 @@ public class SalesService {
     }
 
     // UPDATE
-    public SalesDto update(Long id, Sales updated) {
+    public Sales update(Long id, SalesUpdateDTO salesDTO) {
+        Sales existingSale = salesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sale not found"));
 
-        Sales existing = salesRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Sales not found"));
+        // Update simple fields
+        existingSale.setInvoiceDate(salesDTO.getInvoiceDate());
+        existingSale.setDeliveryToken(salesDTO.getDeliveryToken());
+        existingSale.setDeliveryAddress(salesDTO.getDeliveryAddress());
+        existingSale.setTotalAmount(salesDTO.getTotalAmount());
+        existingSale.setPaidAmount(salesDTO.getPaidAmount());
+        existingSale.setDueAmount(salesDTO.getDueAmount());
+        existingSale.setPaymentStatus(salesDTO.getPaymentStatus());
+        existingSale.setPaymentMethod(salesDTO.getPaymentMethod());
+        existingSale.setReturnValidUntil(salesDTO.getReturnValidUntil());
+        existingSale.setIsReturned(salesDTO.getIsReturned());
 
-        existing.setInvoiceNo(updated.getInvoiceNo());
-        existing.setInvoiceDate(updated.getInvoiceDate());
-        existing.setCustomer(updated.getCustomer());
-        existing.setDeliveryToken(updated.getDeliveryToken());
-        existing.setDeliveryAddress(updated.getDeliveryAddress());
-        existing.setDeliveryAddressBn(updated.getDeliveryAddressBn());
-        existing.setDeliveryStatus(updated.getDeliveryStatus());
-        existing.setPaidAmount(updated.getPaidAmount());
-        existing.setPaymentStatus(updated.getPaymentStatus());
-        existing.setPaymentMethod(updated.getPaymentMethod());
-        existing.setSalesPerson(updated.getSalesPerson());
-        existing.setInventory(updated.getInventory());
-        existing.setReturnValidUntil(updated.getReturnValidUntil());
-        existing.setIsReturned(updated.getIsReturned());
-
-        // Handle Sales Items
-        existing.getSalesItems().clear();
-        if (updated.getSalesItems() != null) {
-            for (SalesItem item : updated.getSalesItems()) {
-                item.setSales(existing);
-                existing.getSalesItems().add(item);
-            }
+        // Update relationships by ID
+        if (salesDTO.getCustomerId() != null) {
+            Customer customer = entityManager.getReference(Customer.class, salesDTO.getCustomerId());
+            existingSale.setCustomer(customer);
         }
 
-        calculateTotals(existing);
+        if (salesDTO.getSalesPersonId() != null) {
+            Employee salesPerson = entityManager.getReference(Employee.class, salesDTO.getSalesPersonId());
+            existingSale.setSalesPerson(salesPerson);
+        }
 
-        Sales saved = salesRepository.save(existing);
+        if (salesDTO.getInventoryId() != null) {
+            Inventory inventory = entityManager.getReference(Inventory.class, salesDTO.getInventoryId());
+            existingSale.setInventory(inventory);
+        }
 
-        return toDto(saved);
+        // Handle sales items
+        existingSale.getSalesItems().clear();
+
+        for (SalesUpdateDTO.SalesItemDTO itemDTO : salesDTO.getSalesItems()) {
+            SalesItem item = new SalesItem();
+            item.setSales(existingSale);
+
+            if (itemDTO.getProductId() != null) {
+                Product product = entityManager.getReference(Product.class, itemDTO.getProductId());
+                item.setProduct(product);
+            }
+
+            item.setQuantity(itemDTO.getQuantity());
+            item.setUnitPrice(itemDTO.getUnitPrice());
+            item.setTotalPrice(itemDTO.getTotalPrice());
+            item.setProductCategory(itemDTO.getProductCategory());
+            item.setDeliveredQuantity(itemDTO.getDeliveredQuantity());
+            item.setPendingQuantity(itemDTO.getPendingQuantity());
+
+            existingSale.getSalesItems().add(item);
+        }
+
+        return salesRepository.save(existingSale);
     }
-
     // GET BY ID
     public SalesDto getById(Long id) {
         Sales sales = salesRepository.findById(id)
