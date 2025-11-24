@@ -6,6 +6,7 @@ public record PurchaseItemDto(
         Long id,
         Long productId,
         String productName,
+        Long inventoryId,
         BigDecimal orderedQuantity,
         BigDecimal deliveredQuantity,
         BigDecimal pendingQuantity,

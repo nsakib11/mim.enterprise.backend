@@ -1,6 +1,7 @@
 // Customer.java
 package com.example.mim.enterprise.model;
 
+import com.example.mim.enterprise.model.enums.CustomerType;
 import jakarta.persistence.*;
 import lombok.*;
 

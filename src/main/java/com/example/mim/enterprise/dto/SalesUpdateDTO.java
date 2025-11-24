@@ -1,8 +1,8 @@
 package com.example.mim.enterprise.dto;
 
-import com.example.mim.enterprise.model.PaymentMethod;
-import com.example.mim.enterprise.model.PaymentStatus;
-import com.example.mim.enterprise.model.ProductCategory;
+import com.example.mim.enterprise.model.enums.PaymentMethod;
+import com.example.mim.enterprise.model.enums.PaymentStatus;
+import com.example.mim.enterprise.model.enums.ProductCategory;
 import lombok.Data;
 
 import java.math.BigDecimal;

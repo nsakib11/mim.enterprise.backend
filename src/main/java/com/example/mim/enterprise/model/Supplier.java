@@ -1,6 +1,8 @@
 // entities/Supplier.java
 package com.example.mim.enterprise.model;
 
+import com.example.mim.enterprise.model.enums.SupplierProduct;
+import com.example.mim.enterprise.model.enums.SupplierType;
 import jakarta.persistence.*;
 import lombok.*;
 

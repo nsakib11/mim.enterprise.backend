@@ -1,6 +1,7 @@
 // PurchaseItem.java
 package com.example.mim.enterprise.model;
 
+import com.example.mim.enterprise.model.enums.ProductCategory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -37,7 +38,6 @@ public class PurchaseItem extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inventory_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @JsonIgnore
     private Inventory inventory;
 
     @Enumerated(EnumType.STRING)

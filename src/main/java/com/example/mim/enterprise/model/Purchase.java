@@ -1,6 +1,9 @@
 // Purchase.java
 package com.example.mim.enterprise.model;
 
+import com.example.mim.enterprise.model.enums.DeliveryStatus;
+import com.example.mim.enterprise.model.enums.PaymentStatus;
+import com.example.mim.enterprise.model.enums.PaymentType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;

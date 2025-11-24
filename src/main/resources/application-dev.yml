@@ -7,6 +7,11 @@ spring:
     password: sakib11
     driver-class-name: org.postgresql.Driver
 
+#    live
+#    url: jdbc:postgresql://103.23.31.75:5432/ierpdb
+#    username: ierpuser
+#    password: Infx_321
+#    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update      # options: validate | update | create | create-drop

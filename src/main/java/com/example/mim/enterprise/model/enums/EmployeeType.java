@@ -1,4 +1,4 @@
-package com.example.mim.enterprise.model;
+package com.example.mim.enterprise.model.enums;
 
 public enum EmployeeType {
         SALES_PERSON,

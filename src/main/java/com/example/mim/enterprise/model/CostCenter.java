@@ -1,6 +1,7 @@
 // CostCenter.java
 package com.example.mim.enterprise.model;
 
+import com.example.mim.enterprise.model.enums.CostCenterType;
 import jakarta.persistence.*;
 import lombok.*;
 

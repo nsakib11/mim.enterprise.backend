@@ -1,6 +1,8 @@
 // Employee.java
 package com.example.mim.enterprise.model;
 
+import com.example.mim.enterprise.model.enums.EmployeeType;
+import com.example.mim.enterprise.model.enums.EmploymentStatus;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;

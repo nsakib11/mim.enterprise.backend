@@ -1,6 +1,7 @@
 // SalesItem.java
 package com.example.mim.enterprise.model;
 
+import com.example.mim.enterprise.model.enums.ProductCategory;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
